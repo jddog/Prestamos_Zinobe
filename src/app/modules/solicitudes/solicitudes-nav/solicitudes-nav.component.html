@@ -1,0 +1,22 @@
+<h1>Solicitudes de prestamos</h1>
+<app-monto-base-banco></app-monto-base-banco>
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+  <li [ngbNavItem]="1">
+    <a ngbNavLink>Aprobadas</a>
+    <ng-template ngbNavContent
+      ><app-solicitudes-aprobadas
+        [solicitudesAprobadas]="solicitudesPrestamosAprobados"
+      ></app-solicitudes-aprobadas
+    ></ng-template>
+  </li>
+  <li [ngbNavItem]="2">
+    <a ngbNavLink>Rechazadas</a>
+    <ng-template ngbNavContent>
+      <app-solicitudes-rechazadas
+        [solicitudesRechazadas]="solicitudesPrestamosRechazados"
+      ></app-solicitudes-rechazadas
+    ></ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

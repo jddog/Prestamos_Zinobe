@@ -1,0 +1,20 @@
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text"
+      ><fa-icon [icon]="iconoMoneda"></fa-icon
+    ></span>
+  </div>
+  <input
+    type="money"
+    class="form-control"
+    placeholder="Ingresar el valor del prestamo"
+    aria-describedby="basic-addon1"
+    [(ngModel)]="Valor"
+    (change)="emitirValor($event)"
+  />
+  <div class="input-group-append">
+    <span class="input-group-text"
+      ><fa-icon [icon]="iconoDolar"></fa-icon
+    ></span>
+  </div>
+</div>

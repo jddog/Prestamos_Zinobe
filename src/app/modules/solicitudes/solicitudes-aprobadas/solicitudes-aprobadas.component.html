@@ -1,0 +1,29 @@
+<table
+  *ngIf="solicitudesAprobadas && solicitudesAprobadas.length > 0"
+  class="table table-striped"
+>
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Valor</th>
+      <th scope="col">Pagar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let solicitud of solicitudesAprobadas; index as i">
+      <td>
+        {{ solicitud.Nombre }}
+      </td>
+      <td>{{ solicitud.Valor | currency }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="pagarPrestamo(solicitud)"
+        >
+          <fa-icon [icon]="iconoCarritoCompras"></fa-icon> Pagar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,22 @@
+<div
+  *ngFor="
+    let solicitudPrestamoHistorial of solicitudesPrestamosHistorial;
+    index as i
+  "
+  class="card text-center"
+>
+  <div class="card-header">
+    {{ solicitudPrestamoHistorial.CreditoPagado }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ solicitudPrestamoHistorial.Valor | currency }}
+    </h5>
+    <p class="card-text">
+      {{ solicitudPrestamoHistorial.EstadoCredito }}
+    </p>
+  </div>
+  <div class="card-footer text-muted">
+    {{ solicitudPrestamoHistorial.Valor }}
+  </div>
+</div>

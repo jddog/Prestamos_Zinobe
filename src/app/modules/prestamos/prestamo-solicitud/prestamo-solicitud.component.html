@@ -1,0 +1,113 @@
+<h1>Solicita tu prestamo</h1>
+<app-monto-base-banco></app-monto-base-banco>
+<div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">
+        <fa-icon [icon]="iconoCedula"></fa-icon
+      ></span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Ingresa tu cedula"
+      aria-describedby="basic-addon2"
+      [(ngModel)]="cedula"
+    />
+    <div class="input-group-append">
+      <button type="button" class="btn btn-primary" (click)="validarUsuario()">
+        <fa-icon [icon]="iconoLupa"></fa-icon>
+        Consultar
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="flagValidacionUsuario">
+    <section *ngIf="usuarioPrestamo.Id; else formularioRegistroUsuario">
+      <label>Bienvenido {{ usuarioPrestamo.Nombre }}</label>
+      <br />
+      <label>Tu email: {{ usuarioPrestamo.Email }}</label>
+    </section>
+    <ng-template #formularioRegistroUsuario>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <fa-icon [icon]="iconoLetra"></fa-icon
+          ></span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ingresa tu nombre completo"
+          aria-describedby="basic-addon2"
+          [(ngModel)]="usuarioPrestamo.Nombre"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1"
+            ><fa-icon [icon]="iconoMail"></fa-icon
+          ></span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ingresar tu correo electrónico"
+          aria-describedby="basic-addon1"
+          [(ngModel)]="usuarioPrestamo.Email"
+        />
+      </div>
+    </ng-template>
+
+    <app-prestamo-input-monto
+      (montoChange)="recibirValorMonto($event)"
+    ></app-prestamo-input-monto>
+
+    <div>
+      <label>¿Deseas ingresar la fecha de pago?</label>
+      <br />
+      <div
+        class="btn-group btn-group-toggle mb-3"
+        ngbRadioGroup
+        name="radioBasic"
+        [(ngModel)]="flagMostrarCalendario"
+      >
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" [value]="true" /> Si
+        </label>
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" [value]="false" /> No
+        </label>
+      </div>
+    </div>
+
+    <div *ngIf="flagMostrarCalendario" class="input-group mb-3">
+      <form class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dp"
+              [(ngModel)]="modeloCalendario"
+              ngbDatepicker
+              #d="ngbDatepicker"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="d.toggle()"
+                type="button"
+              >
+                <fa-icon [icon]="iconoCalendario"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="solicitudCredito()">
+      Solicitar credito
+    </button>
+  </div>
+</div>

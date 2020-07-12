@@ -1,0 +1,19 @@
+<table
+  *ngIf="solicitudesRechazadas && solicitudesRechazadas.length > 0"
+  class="table table-striped"
+>
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let solicitud of solicitudesRechazadas; index as i">
+      <td>
+        {{ solicitud.Nombre }}
+      </td>
+      <td>{{ solicitud.Valor | currency }}</td>
+    </tr>
+  </tbody>
+</table>

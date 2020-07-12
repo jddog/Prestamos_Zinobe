@@ -1,0 +1,30 @@
+<h1>Usuarios</h1>
+<app-monto-base-banco></app-monto-base-banco>
+<table *ngIf="Usuarios && Usuarios.length > 0" class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Cedula</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Email</th>
+      <th scope="col">Ver historial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of Usuarios; index as i">
+      <td>
+        {{ usuario.Cedula }}
+      </td>
+      <td>{{ usuario.Nombre }}</td>
+      <td>{{ usuario.Email }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-link"
+          (click)="verHistorial(usuario.Cedula)"
+        >
+          <fa-icon [icon]="IconoHistorial"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
