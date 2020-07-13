@@ -1,66 +1,36 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 //interfaces
 import { Prestamo } from '../models/Prestamo';
-//modelo
-import { IUsuario } from '../Interfaces/Usuario';
-//environment
-import { environment } from '../../environments/environment';
 
 @Injectable()
 export class servicePrestamos {
-  private urlAPI = 'https://dry-atoll-76166.herokuapp.com/AlMundoHotelsAPI/';
+  private urlAPI = 'http://localhost:9000/prestamos';
 
-  constructor() {}
+  constructor(private _http: HttpClient) {}
 
-  crearPrestamo(usuarioPrestamo: Prestamo): boolean {
-    let usuariosTemporal: IUsuario[] = JSON.parse(
-      localStorage.getItem('usuarios')
-    );
-
-    if (!usuariosTemporal.find((f) => f.Cedula === usuarioPrestamo.Cedula)) {
-      let usuario: IUsuario = {
-        Cedula: usuarioPrestamo.Cedula,
-        Nombre: usuarioPrestamo.Nombre,
-        Email: usuarioPrestamo.Email,
-      };
-      usuariosTemporal.push(usuario);
-      localStorage.setItem('usuarios', JSON.stringify(usuariosTemporal));
-    }
-
-    let prestamosTemporal: Prestamo[] = JSON.parse(
-      localStorage.getItem('prestamos')
-    );
-
-    prestamosTemporal.push(usuarioPrestamo);
-    localStorage.setItem('prestamos', JSON.stringify(prestamosTemporal));
-    return true;
+  crearPrestamo(usuarioPrestamo: Prestamo): Observable<boolean> {
+    return this._http.post<boolean>(this.urlAPI + '/registrarPrestamo', {
+      usuarioPrestamo,
+    });
   }
 
-  ObtenerPrestamosAprobados(): Prestamo[] {
-    let prestamosTemporal: Prestamo[] = JSON.parse(
-      localStorage.getItem('prestamos')
-    );
-
-    return prestamosTemporal.filter(
-      (f) => f.EstadoCredito === environment.estadoCreditoAprobado
+  ObtenerPrestamosPorEstado(estadoFiltro: string): Observable<Prestamo[]> {
+    return this._http.get<Prestamo[]>(
+      this.urlAPI + '/obtenerPrestamosPorEstado/' + estadoFiltro
     );
   }
 
-  ObtenerPrestamosRechazados(): Prestamo[] {
-    let prestamosTemporal: Prestamo[] = JSON.parse(
-      localStorage.getItem('prestamos')
-    );
-
-    return prestamosTemporal.filter(
-      (f) => f.EstadoCredito === environment.estadoCreditoRechazado
+  ObtenerPrestamosPorCedula(Cedula: string): Observable<Prestamo[]> {
+    return this._http.get<Prestamo[]>(
+      this.urlAPI + '/obtenerHistorialPrestamosPorCedula/' + Cedula
     );
   }
 
-  ObtenerPrestamosPorCedula(Cedula: string): Prestamo[] {
-    let prestamosTemporal: Prestamo[] = JSON.parse(
-      localStorage.getItem('prestamos')
+  obtenerPrestamoPorPagarPorCedula(Cedula: string): Observable<Prestamo> {
+    return this._http.get<Prestamo>(
+      this.urlAPI + '/obtenerPrestamoPorPagarPorCedula/' + Cedula
     );
-
-    return prestamosTemporal.filter((f) => f.Cedula === Cedula);
   }
 }

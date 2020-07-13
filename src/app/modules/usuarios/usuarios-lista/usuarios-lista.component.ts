@@ -21,7 +21,14 @@ export class UsuariosListaComponent implements OnInit {
     private serviceUsuarios: serviceUsuarios,
     private router: Router
   ) {
-    this.Usuarios = this.serviceUsuarios.obtenerUsuarios();
+    this.serviceUsuarios.obtenerUsuarios().subscribe(
+      (usuariosConsultados: IUsuario[]) => {
+        this.Usuarios = usuariosConsultados;
+      },
+      (error: any) => {
+        console.log('Error consultando los usuarios');
+      }
+    );
   }
 
   ngOnInit(): void {}

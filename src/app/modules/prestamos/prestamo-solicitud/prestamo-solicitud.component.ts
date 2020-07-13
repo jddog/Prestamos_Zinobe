@@ -39,7 +39,6 @@ export class PrestamoSolicitudComponent implements OnInit {
   flagValidacionUsuario: boolean = false;
   cedula: string = '';
   modeloCalendario: NgbDateStruct;
-
   iconoLupa = faSearch;
   iconoLetra = faFont;
   iconoMail = faEnvelope;
@@ -65,18 +64,23 @@ export class PrestamoSolicitudComponent implements OnInit {
   validarUsuario() {
     if (this.cedula !== '') {
       this.flagValidacionUsuario = true;
-      let usuarioValidado: IUsuario = this.serviceUsuarios.obtenerUsuarioPorCedula(
-        this.cedula
+      this.usuarioPrestamo = new Prestamo();
+      this.serviceUsuarios.obtenerUsuarioPorCedula(this.cedula).subscribe(
+        (usuarioConsultado: IUsuario) => {
+          this.usuarioPrestamo = usuarioConsultado
+            ? new Prestamo(
+                usuarioConsultado._id,
+                usuarioConsultado.Cedula,
+                usuarioConsultado.Nombre,
+                usuarioConsultado.Email,
+                usuarioConsultado.usuarioRechazado
+              )
+            : new Prestamo();
+        },
+        (error: any) => {
+          console.log('Error consultanod usuario');
+        }
       );
-
-      this.usuarioPrestamo = usuarioValidado
-        ? new Prestamo(
-            1,
-            usuarioValidado.Cedula,
-            usuarioValidado.Nombre,
-            usuarioValidado.Email
-          )
-        : new Prestamo();
     } else {
       console.log('Tienes que ingresar una cedula');
     }
@@ -84,9 +88,45 @@ export class PrestamoSolicitudComponent implements OnInit {
 
   solicitudCredito() {
     this.usuarioPrestamo.Cedula = this.cedula;
-    if (this.servicePrestamos.crearPrestamo(this.usuarioPrestamo)) {
-      environment.capitalBaseBanco =
-        environment.capitalBaseBanco - this.usuarioPrestamo.Valor;
+    this.usuarioPrestamo.FechaPago =
+      this.modeloCalendario.year +
+      '/' +
+      this.modeloCalendario.month +
+      '/' +
+      this.modeloCalendario.day;
+
+    if (this.usuarioPrestamo.usuarioRechazado) {
+      console.log(
+        'Lo sentimos, anteriormente ya se le rechazo la solicitud de un prestamo'
+      );
+    } else {
+      this.servicePrestamos
+        .obtenerPrestamoPorPagarPorCedula(this.cedula)
+        .subscribe(
+          (prestamoPorPagar: Prestamo) => {
+            if (prestamoPorPagar) {
+              console.log(
+                'Lo sentimos, tienes un prestamo pendiente por pagar de un valor de:' +
+                  prestamoPorPagar.Valor
+              );
+            } else {
+              this.servicePrestamos
+                .crearPrestamo(this.usuarioPrestamo)
+                .subscribe(
+                  (resultado: boolean) => {
+                    environment.capitalBaseBanco =
+                      environment.capitalBaseBanco - this.usuarioPrestamo.Valor;
+                  },
+                  (error: any) => {
+                    console.log('Error creando el prestamo');
+                  }
+                );
+            }
+          },
+          (error: any) => {
+            console.log('Error creando el prestamo');
+          }
+        );
     }
   }
 }

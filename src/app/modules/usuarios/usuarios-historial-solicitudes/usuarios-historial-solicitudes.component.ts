@@ -22,8 +22,17 @@ export class UsuariosHistorialSolicitudesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.solicitudesPrestamosHistorial = this.servicePrestamos.ObtenerPrestamosPorCedula(
-      this.router.snapshot.params.cedula
-    );
+    this.servicePrestamos
+      .ObtenerPrestamosPorCedula(this.router.snapshot.params.cedula)
+      .subscribe(
+        (historialPrestamos: Prestamo[]) => {
+          this.solicitudesPrestamosHistorial = historialPrestamos;
+        },
+        (error: any) => {
+          console.log(
+            'Error consultando el historial de prestamos por usuario'
+          );
+        }
+      );
   }
 }

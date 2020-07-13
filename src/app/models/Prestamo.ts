@@ -4,28 +4,34 @@ import { environment } from '../../environments/environment';
 import { IUsuario } from '../Interfaces/Usuario';
 
 export class Prestamo implements IUsuario {
-  Id: number;
+  _id: string;
   Cedula: string;
   Nombre: string;
   Email: string;
+  FechaPago: string;
+  usuarioRechazado: boolean;
   Valor: number;
   EstadoCredito: string;
   CreditoPagado: boolean;
 
   constructor(
-    Id?: number,
+    _id?: string,
     Cedula?: string,
     Nombre?: string,
     Email?: string,
-    Valor?: number
+    usuarioRechazado?: boolean,
+    Valor?: number,
+    FechaPago?: string
   ) {
-    this.Id = Id;
+    this._id = _id;
     this.Cedula = Cedula;
     this.Nombre = Nombre;
     this.Email = Email;
+    this.usuarioRechazado = usuarioRechazado;
     this.Valor = Valor;
     this.EstadoCredito = this.asignarEstadoCreditoSort();
     this.CreditoPagado = false;
+    this.FechaPago = FechaPago;
   }
 
   asignarEstadoCreditoSort(): string {

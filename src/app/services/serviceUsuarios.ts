@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 //Interfaces
 import { IUsuario } from '../Interfaces/Usuario';
 
 @Injectable()
 export class serviceUsuarios {
-  private urlAPI = 'https://dry-atoll-76166.herokuapp.com/AlMundoHotelsAPI/';
+  private urlAPI = 'http://localhost:9000/usuarios';
+  constructor(private _http: HttpClient) {}
 
-  constructor() {}
-
-  obtenerUsuarioPorCedula(cedula: string): IUsuario {
-    let usuario: IUsuario = JSON.parse(localStorage.getItem('usuarios')).find(
-      (f) => f.Cedula === cedula
+  obtenerUsuarioPorCedula(cedula: string): Observable<IUsuario> {
+    return this._http.get<IUsuario>(
+      this.urlAPI + '/obtenerUsuarioPorCedula/' + cedula
     );
-    return usuario ? usuario : null;
   }
 
-  obtenerUsuarios(): IUsuario[] {
-    let usuarios: IUsuario[] = JSON.parse(localStorage.getItem('usuarios'));
-    return usuarios ? usuarios : null;
+  obtenerUsuarios(): Observable<IUsuario[]> {
+    return this._http.get<IUsuario[]>(this.urlAPI + '/obtenerUsuarios');
   }
 }

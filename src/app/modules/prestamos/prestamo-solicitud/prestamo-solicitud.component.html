@@ -23,7 +23,7 @@
   </div>
 
   <div *ngIf="flagValidacionUsuario">
-    <section *ngIf="usuarioPrestamo.Id; else formularioRegistroUsuario">
+    <section *ngIf="usuarioPrestamo._id; else formularioRegistroUsuario">
       <label>Bienvenido {{ usuarioPrestamo.Nombre }}</label>
       <br />
       <label>Tu email: {{ usuarioPrestamo.Email }}</label>
