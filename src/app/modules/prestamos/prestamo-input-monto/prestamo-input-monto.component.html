@@ -5,11 +5,13 @@
     ></span>
   </div>
   <input
-    type="money"
+    type="range"
     class="form-control"
     placeholder="Ingresar el valor del prestamo"
-    aria-describedby="basic-addon1"
     [(ngModel)]="Valor"
+    min="10000"
+    step="1000"
+    max="100000"
     (change)="emitirValor($event)"
   />
   <div class="input-group-append">
@@ -18,3 +20,6 @@
     ></span>
   </div>
 </div>
+<label class="font-weight-bold"
+  >Valor a solicitar: {{ Valor | currency }}</label
+>

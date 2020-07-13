@@ -8,16 +8,16 @@ import { faDollarSign, faCoins } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./prestamo-input-monto.component.scss'],
 })
 export class PrestamoInputMontoComponent implements OnInit {
-  Valor: number;
+  Valor: number = 10000;
   iconoMoneda = faCoins;
   iconoDolar = faDollarSign;
-  @Output() montoChange = new EventEmitter<number>();
+  @Output() OutMontoChange = new EventEmitter<number>();
 
   constructor() {}
 
   ngOnInit(): void {}
 
   emitirValor(event: any) {
-    this.montoChange.emit(event.target.value);
+    this.OutMontoChange.emit(event.target.value);
   }
 }

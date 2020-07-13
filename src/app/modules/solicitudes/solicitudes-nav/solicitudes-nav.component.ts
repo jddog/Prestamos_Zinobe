@@ -16,16 +16,7 @@ export class SolicitudesNavComponent implements OnInit {
   solicitudesPrestamosRechazados: Prestamo[];
   active = 1;
   constructor(private servicePrestamos: servicePrestamos) {
-    this.servicePrestamos
-      .ObtenerPrestamosPorEstado(environment.estadoCreditoAprobado)
-      .subscribe(
-        (prestamosAprobados: Prestamo[]) => {
-          this.solicitudesPrestamosAprobados = prestamosAprobados;
-        },
-        (error: any) => {
-          console.log('Error consultando prestamos aprobados');
-        }
-      );
+    this.consultarPrestamosDisponibles();
 
     this.servicePrestamos
       .ObtenerPrestamosPorEstado(environment.estadoCreditoRechazado)
@@ -40,4 +31,31 @@ export class SolicitudesNavComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  consultarPrestamosDisponibles() {
+    this.servicePrestamos
+      .ObtenerPrestamosPorEstado(environment.estadoCreditoAprobado)
+      .subscribe(
+        (prestamosAprobados: Prestamo[]) => {
+          this.solicitudesPrestamosAprobados = prestamosAprobados;
+        },
+        (error: any) => {
+          console.log('Error consultando prestamos aprobados');
+        }
+      );
+  }
+  pagarPrestamo(prestamo: Prestamo) {
+    this.servicePrestamos.pagarPrestamo(prestamo).subscribe(
+      (flagPrestamoPagado: boolean) => {
+        if (flagPrestamoPagado) {
+          environment.capitalBaseBanco =
+            environment.capitalBaseBanco + prestamo.Valor;
+          this.consultarPrestamosDisponibles();
+        }
+      },
+      (error: any) => {
+        console.log('Error pagando el prestamo');
+      }
+    );
+  }
 }

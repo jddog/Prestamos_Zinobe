@@ -16,6 +16,12 @@ export class servicePrestamos {
     });
   }
 
+  pagarPrestamo(prestamo: Prestamo): Observable<boolean> {
+    return this._http.post<boolean>(this.urlAPI + '/pagarPrestamo', {
+      prestamo,
+    });
+  }
+
   ObtenerPrestamosPorEstado(estadoFiltro: string): Observable<Prestamo[]> {
     return this._http.get<Prestamo[]>(
       this.urlAPI + '/obtenerPrestamosPorEstado/' + estadoFiltro

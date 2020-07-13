@@ -1,29 +1,43 @@
-<table
-  *ngIf="solicitudesAprobadas && solicitudesAprobadas.length > 0"
-  class="table table-striped"
->
-  <thead>
-    <tr>
-      <th scope="col">Nombre</th>
-      <th scope="col">Valor</th>
-      <th scope="col">Pagar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let solicitud of solicitudesAprobadas; index as i">
-      <td>
-        {{ solicitud.Nombre }}
-      </td>
-      <td>{{ solicitud.Valor | currency }}</td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-success"
-          (click)="pagarPrestamo(solicitud)"
-        >
-          <fa-icon [icon]="iconoCarritoCompras"></fa-icon> Pagar
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="col-lg-8 col-md-8 col-sm-12 col-12">
+  <table
+    *ngIf="
+      solicitudesAprobadas && solicitudesAprobadas.length > 0;
+      else labelSinRegistros
+    "
+    class="table table-striped table-sm"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Valor</th>
+        <th class="text-right pr-1 w-25" scope="col">Pagar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let solicitud of solicitudesAprobadas; index as i">
+        <td class="w-25">
+          {{ solicitud.Nombre }}
+        </td>
+        <td class="w-25">
+          {{ solicitud.Valor | currency }}
+        </td>
+        <td class="text-right">
+          <button
+            *ngIf="solicitud.CreditoPagado === false; else seccionCreditoPagado"
+            type="button"
+            class="btn btn-success"
+            (click)="pagarPrestamo(solicitud)"
+          >
+            <fa-icon [icon]="iconoCarritoCompras"></fa-icon> Pagar
+          </button>
+          <ng-template #seccionCreditoPagado>
+            <fa-icon [icon]="iconoOk" class="iconoOk"></fa-icon>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #labelSinRegistros>
+    <label>Sin prestamos aprobados</label>>
+  </ng-template>
+</div>

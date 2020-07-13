@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {
   NgbDateStruct,
+  NgbDate,
   NgbInputDatepickerConfig,
+  NgbCalendar,
 } from '@ng-bootstrap/ng-bootstrap';
 /*fortawesome*/
 import {
@@ -45,14 +47,18 @@ export class PrestamoSolicitudComponent implements OnInit {
   iconoDolar = faDollarSign;
   iconoCedula = faIdCard;
   iconoCalendario = faCalendarAlt;
+  flagNoti = true;
+
+  fromDate: NgbDate | null;
 
   constructor(
     private serviceUsuarios: serviceUsuarios,
     private servicePrestamos: servicePrestamos,
-    private modeloCalendarioConfiguracion: NgbInputDatepickerConfig
+    private modeloCalendarioConfiguracion: NgbInputDatepickerConfig,
+    private calendar: NgbCalendar
   ) {
-    modeloCalendarioConfiguracion.minDate = { year: 2020, month: 7, day: 7 };
-    modeloCalendarioConfiguracion.outsideDays = 'hidden';
+    this.fromDate = calendar.getToday();
+    this.fromDate.day += 1;
   }
 
   ngOnInit(): void {}
@@ -78,7 +84,7 @@ export class PrestamoSolicitudComponent implements OnInit {
             : new Prestamo();
         },
         (error: any) => {
-          console.log('Error consultanod usuario');
+          console.log('Error consultando usuario');
         }
       );
     } else {
@@ -88,12 +94,9 @@ export class PrestamoSolicitudComponent implements OnInit {
 
   solicitudCredito() {
     this.usuarioPrestamo.Cedula = this.cedula;
-    this.usuarioPrestamo.FechaPago =
-      this.modeloCalendario.year +
-      '/' +
-      this.modeloCalendario.month +
-      '/' +
-      this.modeloCalendario.day;
+    if (this.modeloCalendario) {
+      this.usuarioPrestamo.FechaPago = `${this.modeloCalendario.year}/${this.modeloCalendario.month}/${this.modeloCalendario.day}`;
+    }
 
     if (this.usuarioPrestamo.usuarioRechazado) {
       console.log(

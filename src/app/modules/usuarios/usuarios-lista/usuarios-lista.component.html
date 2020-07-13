@@ -1,30 +1,43 @@
-<h1>Usuarios</h1>
-<app-monto-base-banco></app-monto-base-banco>
-<table *ngIf="Usuarios && Usuarios.length > 0" class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Cedula</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Email</th>
-      <th scope="col">Ver historial</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let usuario of Usuarios; index as i">
-      <td>
-        {{ usuario.Cedula }}
-      </td>
-      <td>{{ usuario.Nombre }}</td>
-      <td>{{ usuario.Email }}</td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-link"
-          (click)="verHistorial(usuario.Cedula)"
-        >
-          <fa-icon [icon]="IconoHistorial"></fa-icon>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="container-fluid">
+  <h2>Usuarios</h2>
+  <hr />
+  <app-monto-base-banco></app-monto-base-banco>
+  <div class="row">
+    <div class="col-12">
+      <table
+        *ngIf="Usuarios && Usuarios.length > 0; labelSinRegistros"
+        class="table table-striped table-sm"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Cedula</th>
+            <th scope="col">Nombre</th>
+            <th class="text-center" scope="col">Email</th>
+            <th class="text-right" scope="col">Ver historial</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of Usuarios; index as i">
+            <td class="w-25">
+              {{ usuario.Cedula }}
+            </td>
+            <td class="w-25">{{ usuario.Nombre }}</td>
+            <td class="text-center w-25">{{ usuario.Email }}</td>
+            <td class="text-right w-25">
+              <button
+                type="button"
+                class="btn btn-link"
+                (click)="verHistorial(usuario.Cedula)"
+              >
+                <fa-icon [icon]="IconoHistorial"></fa-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #labelSinRegistros>
+        <label>Sin usuarios registrados</label>
+      </ng-template>
+    </div>
+  </div>
+</div>
