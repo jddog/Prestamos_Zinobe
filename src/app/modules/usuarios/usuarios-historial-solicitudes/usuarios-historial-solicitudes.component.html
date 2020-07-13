@@ -1,6 +1,7 @@
 <div class="container-fluid">
-  <h2>CMABIAR NOMBRE</h2>
+  <h2>Historial de préstamos</h2>
   <hr />
+  <app-monto-base-banco></app-monto-base-banco>
   <div class="d-flex">
     <div
       *ngFor="
@@ -10,25 +11,56 @@
       class="card text-center col-lg-3 col-md-6 col-sm-6 col-12 m-2 shadow-sm bg-white"
     >
       <div class="card-header font-weight-bold">
-        {{ solicitudPrestamoHistorial.CreditoPagado }}
+        <label
+          *ngIf="solicitudPrestamoHistorial.FechaPago; else labelSinFecha"
+          >{{ solicitudPrestamoHistorial.FechaPago }}</label
+        >
+        <ng-template #labelSinFecha>
+          <label>Sin fecha registrada</label>
+        </ng-template>
       </div>
       <div class="card-body">
-        <h5 class="card-title text-success">
-          {{ solicitudPrestamoHistorial.Valor | currency }}
-        </h5>
-        <p
-          class="card-text {{
-            solicitudPrestamoHistorial.CreditoPagado
-              ? 'text-danger'
-              : 'text-success'
-          }}"
-        >
-          {{ solicitudPrestamoHistorial.EstadoCredito }}
-        </p>
+        <div>
+          <fa-icon [icon]="iconoCheque" class="iconoCheque"></fa-icon>
+        </div>
+        <div>
+          <h5
+            class="card-title text-success card-text {{
+              solicitudPrestamoHistorial.EstadoCredito === 'Aprobado'
+                ? 'text-success'
+                : 'text-danger'
+            }}"
+          >
+            {{ solicitudPrestamoHistorial.Valor | currency }}
+          </h5>
+          <p
+            class="card-text {{
+              solicitudPrestamoHistorial.EstadoCredito === 'Aprobado'
+                ? 'text-success'
+                : 'text-danger'
+            }}"
+          >
+            {{ solicitudPrestamoHistorial.EstadoCredito }}
+          </p>
+        </div>
       </div>
       <div class="card-footer text-muted">
-        {{ solicitudPrestamoHistorial.Valor }}
+        <div
+          *ngIf="
+            solicitudPrestamoHistorial.CreditoPagado;
+            else seccionPrestamoPagado
+          "
+        >
+          <fa-icon [icon]="iconoOk" class="iconoOk"></fa-icon>
+          <label class="ml-1">Prestamo cancelado</label>
+        </div>
       </div>
+      <ng-template #seccionPrestamoPagado>
+        <div>
+          <fa-icon [icon]="iconoExclamacion" class="iconoExclamacion"></fa-icon>
+          <label class="ml-1">Pendiente por pagar</label>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

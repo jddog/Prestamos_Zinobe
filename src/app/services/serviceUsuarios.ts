@@ -3,10 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 //Interfaces
 import { IUsuario } from '../Interfaces/Usuario';
+//environment
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class serviceUsuarios {
-  private urlAPI = 'http://localhost:9000/usuarios';
+  private urlAPI = environment.urlAPI + 'usuarios';
   constructor(private _http: HttpClient) {}
 
   obtenerUsuarioPorCedula(cedula: string): Observable<IUsuario> {

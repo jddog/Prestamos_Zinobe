@@ -15,6 +15,10 @@ export class SolicitudesNavComponent implements OnInit {
   solicitudesPrestamosAprobados: Prestamo[];
   solicitudesPrestamosRechazados: Prestamo[];
   active = 1;
+  flagMostrarAlerta: boolean = false;
+  mensajeAlerta: string = 'warning';
+  tipoAlerta: string = '';
+
   constructor(private servicePrestamos: servicePrestamos) {
     this.consultarPrestamosDisponibles();
 
@@ -25,12 +29,20 @@ export class SolicitudesNavComponent implements OnInit {
           this.solicitudesPrestamosRechazados = prestamosRechazados;
         },
         (error: any) => {
-          console.log('Error consultando prestamos rechazados');
+          this.tipoAlerta = 'danger';
+          this.mensajeAlerta = 'Error consultando prestamos rechazados';
+          this.flagMostrarAlerta = true;
         }
       );
   }
 
   ngOnInit(): void {}
+
+  cerrarAlerta() {
+    this.flagMostrarAlerta = false;
+    this.mensajeAlerta = '';
+    this.tipoAlerta = '';
+  }
 
   consultarPrestamosDisponibles() {
     this.servicePrestamos
@@ -40,7 +52,9 @@ export class SolicitudesNavComponent implements OnInit {
           this.solicitudesPrestamosAprobados = prestamosAprobados;
         },
         (error: any) => {
-          console.log('Error consultando prestamos aprobados');
+          this.tipoAlerta = 'danger';
+          this.mensajeAlerta = 'Error consultando prestamos aprobados';
+          this.flagMostrarAlerta = true;
         }
       );
   }
@@ -51,10 +65,16 @@ export class SolicitudesNavComponent implements OnInit {
           environment.capitalBaseBanco =
             environment.capitalBaseBanco + prestamo.Valor;
           this.consultarPrestamosDisponibles();
+
+          this.tipoAlerta = 'success';
+          this.mensajeAlerta = 'Has pagado exitosamente tu prestamo';
+          this.flagMostrarAlerta = true;
         }
       },
       (error: any) => {
-        console.log('Error pagando el prestamo');
+        this.tipoAlerta = 'danger';
+        this.mensajeAlerta = 'Error pagando el prestamo';
+        this.flagMostrarAlerta = true;
       }
     );
   }

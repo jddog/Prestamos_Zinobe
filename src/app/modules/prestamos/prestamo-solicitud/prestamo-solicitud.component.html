@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h2>Solicita tu prestamo</h2>
+  <h2>Solicita tu préstamo</h2>
   <hr />
   <app-monto-base-banco></app-monto-base-banco>
 
@@ -16,7 +16,7 @@
         <input
           type="text"
           class="form-control needs-validation"
-          placeholder="Ingresa tu cedula"
+          placeholder="Ingresa tu cédula"
           aria-describedby="basic-addon2"
           [(ngModel)]="cedula"
         />
@@ -128,8 +128,10 @@
     </div>
   </div>
 </div>
-<div class="col-lg-3">
-  <p *ngIf="flagNoti" class="fixed-top">
-    <ngb-alert type="danger" (close)="flagNoti = false">Hola</ngb-alert>
-  </p>
-</div>
+<app-alert-personalizado
+  *ngIf="flagMostrarAlerta"
+  [flagMostrarNotificacion]="flagMostrarAlerta"
+  [textoAlerta]="mensajeAlerta"
+  [tipoAlerta]="tipoAlerta"
+  (OutCerrarAlerta)="cerrarAlerta()"
+></app-alert-personalizado>

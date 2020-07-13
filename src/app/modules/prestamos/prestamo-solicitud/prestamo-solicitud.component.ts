@@ -10,7 +10,6 @@ import {
   faSearch,
   faFont,
   faEnvelope,
-  faCoins,
   faDollarSign,
   faIdCard,
   faCalendarAlt,
@@ -33,6 +32,8 @@ import { environment } from '../../../../environments/environment';
 })
 export class PrestamoSolicitudComponent implements OnInit {
   flagMostrarAlerta: boolean = false;
+  mensajeAlerta: string = 'warning';
+  tipoAlerta: string = '';
   flagMostrarCalendario: boolean = false;
   selected = 0;
   hovered = 0;
@@ -47,14 +48,11 @@ export class PrestamoSolicitudComponent implements OnInit {
   iconoDolar = faDollarSign;
   iconoCedula = faIdCard;
   iconoCalendario = faCalendarAlt;
-  flagNoti = true;
-
   fromDate: NgbDate | null;
 
   constructor(
     private serviceUsuarios: serviceUsuarios,
     private servicePrestamos: servicePrestamos,
-    private modeloCalendarioConfiguracion: NgbInputDatepickerConfig,
     private calendar: NgbCalendar
   ) {
     this.fromDate = calendar.getToday();
@@ -62,6 +60,12 @@ export class PrestamoSolicitudComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  cerrarAlerta() {
+    this.flagMostrarAlerta = false;
+    this.mensajeAlerta = '';
+    this.tipoAlerta = '';
+  }
 
   recibirValorMonto(valorMonto: number) {
     this.usuarioPrestamo.Valor = valorMonto;
@@ -84,11 +88,15 @@ export class PrestamoSolicitudComponent implements OnInit {
             : new Prestamo();
         },
         (error: any) => {
-          console.log('Error consultando usuario');
+          this.tipoAlerta = 'danger';
+          this.mensajeAlerta = 'Error consultando usuario';
+          this.flagMostrarAlerta = true;
         }
       );
     } else {
-      console.log('Tienes que ingresar una cedula');
+      this.tipoAlerta = 'warning';
+      this.mensajeAlerta = 'Tienes que ingresar la cédula';
+      this.flagMostrarAlerta = true;
     }
   }
 
@@ -99,37 +107,68 @@ export class PrestamoSolicitudComponent implements OnInit {
     }
 
     if (this.usuarioPrestamo.usuarioRechazado) {
-      console.log(
-        'Lo sentimos, anteriormente ya se le rechazo la solicitud de un prestamo'
-      );
+      this.limpiarVariables();
+      this.tipoAlerta = 'warning';
+      this.mensajeAlerta =
+        'Lo sentimos, anteriormente ya se le rechazo la solicitud de un prestamo';
+      this.flagMostrarAlerta = true;
     } else {
       this.servicePrestamos
         .obtenerPrestamoPorPagarPorCedula(this.cedula)
         .subscribe(
           (prestamoPorPagar: Prestamo) => {
             if (prestamoPorPagar) {
-              console.log(
+              this.tipoAlerta = 'warning';
+              this.mensajeAlerta =
                 'Lo sentimos, tienes un prestamo pendiente por pagar de un valor de:' +
-                  prestamoPorPagar.Valor
-              );
+                prestamoPorPagar.Valor;
+              this.flagMostrarAlerta = true;
+              this.limpiarVariables();
             } else {
               this.servicePrestamos
                 .crearPrestamo(this.usuarioPrestamo)
                 .subscribe(
                   (resultado: boolean) => {
-                    environment.capitalBaseBanco =
-                      environment.capitalBaseBanco - this.usuarioPrestamo.Valor;
+                    if (resultado) {
+                      environment.capitalBaseBanco =
+                        environment.capitalBaseBanco -
+                        this.usuarioPrestamo.Valor;
+
+                      this.tipoAlerta = 'success';
+                      this.mensajeAlerta =
+                        'Se registro el prestamo correctamente y ha sido ' +
+                        (this.usuarioPrestamo._id
+                          ? this.usuarioPrestamo.EstadoCredito
+                          : 'Aprobado');
+                      this.flagMostrarAlerta = true;
+
+                      this.limpiarVariables();
+                    }
                   },
                   (error: any) => {
-                    console.log('Error creando el prestamo');
+                    this.tipoAlerta = 'danger';
+                    this.mensajeAlerta = 'Error creando el prestamo';
+                    this.flagMostrarAlerta = true;
+                    this.limpiarVariables();
                   }
                 );
             }
           },
           (error: any) => {
-            console.log('Error creando el prestamo');
+            this.limpiarVariables();
+            this.tipoAlerta = 'danger';
+            this.mensajeAlerta = 'Error creando el prestamo';
+            this.flagMostrarAlerta = true;
           }
         );
     }
+  }
+
+  limpiarVariables() {
+    this.usuarioPrestamo = new Prestamo();
+    this.cedula = '';
+    this.modeloCalendario = null;
+    this.flagMostrarCalendario = false;
+    this.flagValidacionUsuario = false;
   }
 }

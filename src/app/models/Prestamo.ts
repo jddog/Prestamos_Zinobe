@@ -27,8 +27,8 @@ export class Prestamo implements IUsuario {
     this.Cedula = Cedula;
     this.Nombre = Nombre;
     this.Email = Email;
-    this.usuarioRechazado = usuarioRechazado;
-    this.Valor = Valor;
+    this.usuarioRechazado = usuarioRechazado ? usuarioRechazado : false;
+    this.Valor = 10000;
     this.EstadoCredito = this.asignarEstadoCreditoSort();
     this.CreditoPagado = false;
     this.FechaPago = FechaPago;

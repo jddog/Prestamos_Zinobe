@@ -1,7 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 /*fortawesome*/
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckCircle,
+  faExclamationCircle,
+  faMoneyCheckAlt,
+} from '@fortawesome/free-solid-svg-icons';
 //models
 import { Prestamo } from '../../../models/Prestamo';
 //services
@@ -15,6 +19,9 @@ import { servicePrestamos } from '../../../services/servicePrestamos';
 })
 export class UsuariosHistorialSolicitudesComponent implements OnInit {
   solicitudesPrestamosHistorial: Prestamo[];
+  iconoOk = faCheckCircle;
+  iconoExclamacion = faExclamationCircle;
+  iconoCheque = faMoneyCheckAlt;
 
   constructor(
     private servicePrestamos: servicePrestamos,

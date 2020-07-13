@@ -2,7 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 //models
 import { Prestamo } from '../../../models/Prestamo';
 /*fortawesome*/
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckCircle,
+  faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-solicitudes-aprobadas',
@@ -13,6 +16,7 @@ export class SolicitudesAprobadasComponent implements OnInit {
   @Input() solicitudesAprobadas: Prestamo[];
   @Output() OutPagarPrestamo = new EventEmitter<Prestamo>();
 
+  iconoCarritoCompras = faShoppingCart;
   iconoOk = faCheckCircle;
   constructor() {}
 

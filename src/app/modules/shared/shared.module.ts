@@ -5,10 +5,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MontoBaseBancoComponent } from './monto-base-banco/monto-base-banco.component';
+import { AlertPersonalizadoComponent } from './alert-personalizado/alert-personalizado.component';
 
 @NgModule({
-  declarations: [MontoBaseBancoComponent],
+  declarations: [MontoBaseBancoComponent, AlertPersonalizadoComponent],
   imports: [CommonModule, NgbModule, FontAwesomeModule],
-  exports: [MontoBaseBancoComponent],
+  exports: [MontoBaseBancoComponent, AlertPersonalizadoComponent],
 })
 export class SharedModule {}

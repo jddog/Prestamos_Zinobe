@@ -21,6 +21,12 @@
       ></ng-template>
     </li>
   </ul>
-
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>
+<app-alert-personalizado
+  *ngIf="flagMostrarAlerta"
+  [flagMostrarNotificacion]="flagMostrarAlerta"
+  [textoAlerta]="mensajeAlerta"
+  [tipoAlerta]="tipoAlerta"
+  (OutCerrarAlerta)="cerrarAlerta()"
+></app-alert-personalizado>

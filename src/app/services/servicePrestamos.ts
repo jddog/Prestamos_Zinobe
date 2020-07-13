@@ -3,10 +3,12 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 //interfaces
 import { Prestamo } from '../models/Prestamo';
+//environment
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class servicePrestamos {
-  private urlAPI = 'http://localhost:9000/prestamos';
+  private urlAPI = environment.urlAPI + 'prestamos';
 
   constructor(private _http: HttpClient) {}
 

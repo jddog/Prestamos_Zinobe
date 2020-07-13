@@ -15,7 +15,9 @@ export class PrestamoInputMontoComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.OutMontoChange.emit(this.Valor);
+  }
 
   emitirValor(event: any) {
     this.OutMontoChange.emit(event.target.value);
